@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/RandolphPeralta/Training#readme",
   "dependencies": {
+    "scanf": "^1.2.0",
     "typescript": "^5.9.3"
   }
 }
