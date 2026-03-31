@@ -22,16 +22,27 @@ export class View {
         switch (option){
             case "1":
                 this.createClient();
+                this.pause()
+                this.buildMenuAplicaction()
                 break
             case "2":
                 this.readClients();
+                this.pause()
+                this.buildMenuAplicaction
                 break
             case "3":
                 this.updateClient();
+                this.pause()
+                this.buildMenuAplicaction
                 break
             case "4":
                 this.deleteClient();
+                this.pause()
+                this.buildMenuAplicaction()
                 break
+            case "0":
+                // TOCA PONER EL BOTON DE SALIR Y EL BOTON DE ENCONTRAR POR ID
+                
         }
     }
 
@@ -95,4 +106,8 @@ export class View {
         console.log(status ? "✅ Eliminado" : "❌ No encontrado")
     }
     
+    pause(): void {
+    console.log("\nPresione ENTER para continuar...")
+    scanf("%c") // espera un carácter (ENTER)
+}
 }
