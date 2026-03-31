@@ -1,38 +1,39 @@
-import {IAccion} from "../abstration/interfaces"
+import { Accionadicional } from "../abstration/interfaces"
 
-export class InMemoryService implements IAccion {
+export class InMemoryService implements Accionadicional {
     private databaseInMemory: Array<any> = []
 
-    create<T>(playload: T): boolean {
-        return this.databaseInMemory.push(playload) > 0
+    create<T>(item: T): boolean {
+        return this.databaseInMemory.push(item) > 0
     }
+
     read<T>(): Array<T> {
         return this.databaseInMemory
     }
+
     update<T>(id: string, data: T): boolean {
-        let status = true;
-        let indexResult = this.databaseInMemory.findIndex(([key, value]) => id === value)
+
+        let indexResult = this.databaseInMemory.findIndex(([, value]) => id === value)
 
         if (indexResult === -1)
-            status = false
+            return false
 
         this.databaseInMemory[indexResult] = data;
-        return status;
+        return true;
     }
+
     delete(id: string): boolean {
-        let status = true;
-        let indexResult = this.databaseInMemory.findIndex(([key, value]) => id === value)
+
+        let indexResult = this.databaseInMemory.findIndex(([, value]) => id === value)
 
         if (indexResult === -1)
-            status = false
+            return false
 
         this.databaseInMemory.splice(indexResult, 1)
-        return status;
+        return true;
     }
 
-    findbyid<T>(id: string) {
-        this.databaseInMemory
-        // Toca completar la logica
+    findbyid<T>(id: string): Array<T> {
+        return this.databaseInMemory.filter((item: any) => item.id === id)
     }
-    
 }

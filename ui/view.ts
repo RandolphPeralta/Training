@@ -98,7 +98,6 @@ export class View {
         console.log(status ? "✅ Actualizado" : "❌ No encontrado")
     }
 
-    // ✅ DELETE
     deleteClient(): void {
         const id = String(scanf("Ingrese el ID del estudiante a eliminar: "))
 
@@ -108,6 +107,6 @@ export class View {
     
     pause(): void {
     console.log("\nPresione ENTER para continuar...")
-    scanf("%c") // espera un carácter (ENTER)
+    scanf("%c") 
 }
 }
