@@ -1,6 +1,6 @@
-import { Accionadicional } from "../abstration/interfaces"
+import { IAccionadicional } from "../abstration/interfaces"
 
-export class InMemoryService implements Accionadicional {
+export class InMemoryService implements IAccionadicional {
     private databaseInMemory: Array<any> = []
 
     create<T>(item: T): boolean {
@@ -13,7 +13,9 @@ export class InMemoryService implements Accionadicional {
 
     update<T>(id: string, data: T): boolean {
 
-        let indexResult = this.databaseInMemory.findIndex(([, value]) => id === value)
+        let indexResult = this.databaseInMemory.findIndex(
+            (item: any) => item.id === id
+        )
 
         if (indexResult === -1)
             return false
@@ -24,7 +26,9 @@ export class InMemoryService implements Accionadicional {
 
     delete(id: string): boolean {
 
-        let indexResult = this.databaseInMemory.findIndex(([, value]) => id === value)
+        let indexResult = this.databaseInMemory.findIndex(
+            (item: any) => item.id === id
+        )
 
         if (indexResult === -1)
             return false

@@ -1,10 +1,10 @@
 import scanf from 'scanf';
-import { IAccion } from "../abstration/interfaces"
+import { IAccionadicional } from "../abstration/interfaces"
 import { Estudiante } from "../modelsave/type"
 
 export class View {
 
-    constructor(private _crudService: IAccion){}
+    constructor(private _crudService: IAccionadicional){}
 
     buildMenuAplicaction(): void{
         console.log("============ Bienvenido =============")
@@ -12,6 +12,7 @@ export class View {
         console.log("2. Listar Estudiantes");
         console.log("3. Actualizar Estudiante");
         console.log("4. Eliminar Estudiante");
+        console.log("0. Salir del sistema")
         console.log()
 
         const selectedOption = scanf("%s");
@@ -28,12 +29,12 @@ export class View {
             case "2":
                 this.readClients();
                 this.pause()
-                this.buildMenuAplicaction
+                this.buildMenuAplicaction()
                 break
             case "3":
                 this.updateClient();
                 this.pause()
-                this.buildMenuAplicaction
+                this.buildMenuAplicaction()
                 break
             case "4":
                 this.deleteClient();
@@ -41,12 +42,15 @@ export class View {
                 this.buildMenuAplicaction()
                 break
             case "0":
-                // TOCA PONER EL BOTON DE SALIR Y EL BOTON DE ENCONTRAR POR ID
+                console.log("👋 Saliendo del sistema...");
+                return
+            default:
+                console.log("❌ Opción inválida")
+                this.buildMenuAplicaction()
                 
         }
     }
 
-    // ✅ CREATE usando Object.entries
     createClient(): void {
 
         const form: Estudiante = {
@@ -66,7 +70,6 @@ export class View {
         console.log(status ? "✅ Estudiante creado" : "❌ Error")
     }
 
-    // ✅ READ
     readClients(): void {
         const estudiantes = this._crudService.read<Estudiante>()
 
@@ -77,9 +80,9 @@ export class View {
         })
     }
 
-    // ✅ UPDATE usando Object.entries
     updateClient(): void {
-        const id = String(scanf("%s","Ingrese el ID del estudiante a actualizar: "))
+        console.log("Ingrese el ID del estudiante a actualizar: ")
+        const id = scanf("%s")
 
         const form: Estudiante = {
             id: id,
@@ -99,10 +102,27 @@ export class View {
     }
 
     deleteClient(): void {
-        const id = String(scanf("Ingrese el ID del estudiante a eliminar: "))
+        console.log("Ingrese el ID del estudiante a eliminar: ")
+        const id = scanf("%s")
 
         const status = this._crudService.delete(id)
         console.log(status ? "✅ Eliminado" : "❌ No encontrado")
+    }
+
+    findClientById(): void {
+        console.log("Ingrese el ID del estudiante a buscar: ")
+        const id = scanf("%s")
+
+        const result = this._crudService.findbyid<Estudiante>(id)
+
+        if (result.length === 0) {
+            console.log("❌ Estudiante no encontrado")
+            return
+    }
+
+        console.log("\n===== RESULTADO =====")
+        result.forEach(est => console.log(est))
+
     }
     
     pause(): void {

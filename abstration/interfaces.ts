@@ -4,7 +4,7 @@ export interface IAccion {
     update<T>(id: string, data: T): boolean
     delete(id: string): boolean
 }
-export interface Accionadicional extends IAccion{
+export interface IAccionadicional extends IAccion{
     findbyid<T>(id: string): Array<T>
 }
 
