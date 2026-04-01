@@ -12,6 +12,7 @@ export class View {
         console.log("2. Listar Estudiantes");
         console.log("3. Actualizar Estudiante");
         console.log("4. Eliminar Estudiante");
+        console.log("5. Buscar estudiante")
         console.log("0. Salir del sistema")
         console.log()
 
@@ -41,6 +42,10 @@ export class View {
                 this.pause()
                 this.buildMenuAplicaction()
                 break
+            case "5":
+                this.findClientById();
+                this.pause()
+                this.buildMenuAplicaction()
             case "0":
                 console.log("👋 Saliendo del sistema...");
                 return
