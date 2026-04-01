@@ -135,3 +135,5 @@ export class View {
     scanf("%c") 
 }
 }
+
+// FALTA ESCRIBIR LAS ACCIONES DEL LIBRO Y DEL PRESTAMO
