@@ -4,7 +4,7 @@ import { Estudiante, Libro } from "../modelsave/type"
 
 export class View {
 
-    constructor(private _crudService: IAccionadicional) { }
+    constructor(private _studentService: IAccionadicional, private _bookService: IAccionadicional) {}
 
     buildMenuAplicaction(): void {
         console.log("============ Bienvenido =============")
@@ -28,49 +28,55 @@ export class View {
     processOptionSelected(option: string): void {
         switch (option) {
             case "1":
-                this.createClient();
+                this.createStudent();
                 this.pause()
                 this.buildMenuAplicaction()
                 break
             case "2":
-                this.readClients();
+                this.readStudents();
                 this.pause()
                 this.buildMenuAplicaction()
                 break
             case "3":
-                this.updateClient();
+                this.updateStudent();
                 this.pause()
                 this.buildMenuAplicaction()
                 break
             case "4":
-                this.deleteClient();
+                this.deleteStudent();
                 this.pause()
                 this.buildMenuAplicaction()
                 break
             case "5":
-                this.findClientById();
+                this.findStudentById();
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "6":
                 this.createBook()
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "7":
                 this.readBooks()
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "8":
                 this.updateBook()
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "9":
                 this.deleteBook()
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "10":
                 this.findBookById()
                 this.pause()
                 this.buildMenuAplicaction()
+                break
             case "0":
                 console.log("👋 Saliendo del sistema...");
                 return
@@ -81,7 +87,7 @@ export class View {
         }
     }
 
-    createClient(): void {
+    createStudent(): void {
 
         const form: Estudiante = {
             id: "",
@@ -96,21 +102,19 @@ export class View {
             form[key as keyof Estudiante] = value
         })
 
-        const status = this._crudService.create(form)
+        const status = this._studentService.create(form)
         console.log(status ? "✅ Estudiante creado" : "❌ Error")
     }
 
-    readClients(): void {
-        const estudiantes = this._crudService.read<Estudiante>()
+    readStudents(): void {
+        const estudiantes = this._studentService.read<Estudiante>()
 
         console.log("\n===== LISTADO =====")
 
-        estudiantes.forEach(est => {
-            console.log(est)
-        })
+        estudiantes.forEach(estudiante => {console.log(estudiante)})
     }
 
-    updateClient(): void {
+    updateStudent(): void {
         console.log("Ingrese el ID del estudiante a actualizar: ")
         const id = scanf("%s")
 
@@ -127,23 +131,23 @@ export class View {
             form[key as keyof Estudiante] = value
         })
 
-        const status = this._crudService.update(id, form)
+        const status = this._studentService.update(id, form)
         console.log(status ? "✅ Actualizado" : "❌ No encontrado")
     }
 
-    deleteClient(): void {
+    deleteStudent(): void {
         console.log("Ingrese el ID del estudiante a eliminar: ")
         const id = scanf("%s")
 
-        const status = this._crudService.delete(id)
+        const status = this._studentService.delete(id)
         console.log(status ? "✅ Eliminado" : "❌ No encontrado")
     }
 
-    findClientById(): void {
+    findStudentById(): void {
         console.log("Ingrese el ID del estudiante a buscar: ")
         const id = scanf("%s")
 
-        const result = this._crudService.findbyid<Estudiante>(id)
+        const result = this._studentService.findbyid<Estudiante>(id)
 
         if (result.length === 0) {
             console.log("❌ Estudiante no encontrado")
@@ -176,12 +180,12 @@ export class View {
             disponible
         }
 
-        const status = this._crudService.create(form)
+        const status = this._bookService.create(form)
         console.log(status ? "✅ Libro creado" : "❌ Error")
     }
 
     readBooks(): void {
-        const libros = this._crudService.read<Libro>()
+        const libros = this._bookService.read<Libro>()
 
         console.log("\n===== LISTADO DE LIBROS =====")
 
@@ -216,7 +220,7 @@ export class View {
             disponible
         }
 
-        const status = this._crudService.update(id, form)
+        const status = this._bookService.update(id, form)
         console.log(status ? "✅ Libro actualizado" : "❌ No encontrado")
     }
 
@@ -225,7 +229,7 @@ export class View {
         console.log("Ingrese el ID del libro a eliminar:")
         const id = scanf("%s")
 
-        const status = this._crudService.delete(id)
+        const status = this._bookService.delete(id)
         console.log(status ? "✅ Libro eliminado" : "❌ No encontrado")
     }
 
@@ -234,7 +238,7 @@ export class View {
         console.log("Ingrese el ID del libro:")
         const id = scanf("%s")
 
-        const result = this._crudService.findbyid<Libro>(id)
+        const result = this._bookService.findbyid<Libro>(id)
 
         if (result.length === 0) {
             console.log("❌ Libro no encontrado")
