@@ -1,10 +1,14 @@
 import scanf from 'scanf';
 import { IAccionadicional } from "../abstration/interfaces"
-import { Estudiante, Libro } from "../modelsave/type"
+import { Estudiante, Libro, Prestamos } from "../modelsave/type"
 
 export class View {
 
-    constructor(private _studentService: IAccionadicional, private _bookService: IAccionadicional) {}
+    constructor(
+        private _studentService: IAccionadicional,
+        private _bookService: IAccionadicional,
+        private _loanService: IAccionadicional
+    ) { }
 
     buildMenuAplicaction(): void {
         console.log("============ Bienvenido =============")
@@ -18,6 +22,8 @@ export class View {
         console.log("8. Actualizar Libro");
         console.log("9. Eliminar Libro");
         console.log("10. Buscar Libro");
+        console.log("11. Prestar Libro")
+        console.log("12. Devolver Libro")
         console.log("0. Salir del sistema");
         console.log()
 
@@ -77,6 +83,16 @@ export class View {
                 this.pause()
                 this.buildMenuAplicaction()
                 break
+            case "11":
+                this.lendBook()
+                this.pause()
+                this.buildMenuAplicaction()
+                break
+            case "12":
+                this.returnBook
+                this.pause()
+                this.buildMenuAplicaction()
+                break    
             case "0":
                 console.log("👋 Saliendo del sistema...");
                 return
@@ -111,7 +127,7 @@ export class View {
 
         console.log("\n===== LISTADO =====")
 
-        estudiantes.forEach(estudiante => {console.log(estudiante)})
+        estudiantes.forEach(estudiante => { console.log(estudiante) })
     }
 
     updateStudent(): void {
@@ -249,10 +265,86 @@ export class View {
         result.forEach(libro => console.log(libro))
     }
 
+    lendBook(): void {
+
+        console.log("Ingrese ID del libro:")
+        const idLibro = scanf("%s")
+
+        console.log("Ingrese ID del estudiante:")
+        const idCliente = scanf("%s")
+
+        const libro = this._bookService.findbyid<Libro>(idLibro)[0]
+
+        if (!libro) {
+            console.log("❌ Libro no existe")
+            return
+        }
+
+        if (!libro.disponible) {
+            console.log("❌ Libro no disponible")
+            return
+        }
+
+        const estudiante = this._studentService.findbyid<Estudiante>(idCliente)[0]
+
+        if (!estudiante) {
+            console.log("❌ Estudiante no existe")
+            return
+        }
+
+        const prestamo: Prestamos = {
+            idLibro,
+            idCliente,
+            fechaPrestamo: new Date()
+        }
+
+        const status = this._loanService.create(prestamo)
+
+        if (!status) {
+            console.log("❌ Error al prestar libro")
+            return
+        }
+
+        libro.disponible = false
+        this._bookService.update(idLibro, libro)
+
+        console.log("✅ Libro prestado correctamente")
+    }
+
+    // TOCA CORREGIR ESTA FUNCION DE DEVOLVER 
+
+    returnBook(): void {
+
+        console.log("Ingrese ID del libro a devolver:")
+        const idLibro = scanf("%s")
+
+        const prestamos = this._loanService.read<Prestamos>()
+
+        const prestamo = prestamos.find(p =>
+            p.idLibro === idLibro && !p.fechaDevolucion
+        )
+
+        if (!prestamo) {
+            console.log("❌ No hay préstamo activo para este libro")
+            return
+        }
+
+        prestamo.fechaDevolucion = new Date()
+
+        this._loanService.update(idLibro, prestamo)
+
+        const libro = this._bookService.findbyid<Libro>(idLibro)[0]
+
+        if (libro) {
+            libro.disponible = true
+            this._bookService.update(idLibro, libro)
+        }
+
+        console.log("✅ Libro devuelto correctamente")
+    }
+
     pause(): void {
         console.log("\nPresione ENTER para continuar...")
         scanf("%c")
     }
 }
-
-// FALTA ESCRIBIR LAS ACCIONES DEL LIBRO Y DEL PRESTAMO
