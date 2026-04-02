@@ -26,8 +26,9 @@ export class View {
         console.log("12. Devolver Libro")
         console.log("0. Salir del sistema");
         console.log()
-
+        console.log(`Que opcion desea: `)
         const selectedOption = scanf("%s");
+        
         this.processOptionSelected(selectedOption)
     }
 
@@ -89,15 +90,15 @@ export class View {
                 this.buildMenuAplicaction()
                 break
             case "12":
-                this.returnBook
+                this.returnBook()
                 this.pause()
                 this.buildMenuAplicaction()
                 break    
             case "0":
-                console.log("👋 Saliendo del sistema...");
+                console.log("Saliendo del sistema...");
                 return
             default:
-                console.log("❌ Opción inválida")
+                console.log("Opción inválida")
                 this.buildMenuAplicaction()
 
         }
@@ -119,7 +120,7 @@ export class View {
         })
 
         const status = this._studentService.create(form)
-        console.log(status ? "✅ Estudiante creado" : "❌ Error")
+        console.log(status ? "Estudiante creado" : "Error")
     }
 
     readStudents(): void {
@@ -148,7 +149,7 @@ export class View {
         })
 
         const status = this._studentService.update(id, form)
-        console.log(status ? "✅ Actualizado" : "❌ No encontrado")
+        console.log(status ? "Actualizado" : "No encontrado")
     }
 
     deleteStudent(): void {
@@ -156,7 +157,7 @@ export class View {
         const id = scanf("%s")
 
         const status = this._studentService.delete(id)
-        console.log(status ? "✅ Eliminado" : "❌ No encontrado")
+        console.log(status ? "Eliminado" : "No encontrado")
     }
 
     findStudentById(): void {
@@ -166,7 +167,7 @@ export class View {
         const result = this._studentService.findbyid<Estudiante>(id)
 
         if (result.length === 0) {
-            console.log("❌ Estudiante no encontrado")
+            console.log("Estudiante no encontrado")
             return
         }
 
@@ -197,7 +198,7 @@ export class View {
         }
 
         const status = this._bookService.create(form)
-        console.log(status ? "✅ Libro creado" : "❌ Error")
+        console.log(status ? "Libro creado" : "Error")
     }
 
     readBooks(): void {
@@ -206,7 +207,7 @@ export class View {
         console.log("\n===== LISTADO DE LIBROS =====")
 
         if (libros.length === 0) {
-            console.log("⚠️ No hay libros registrados")
+            console.log("No hay libros registrados")
             return
         }
 
@@ -237,7 +238,7 @@ export class View {
         }
 
         const status = this._bookService.update(id, form)
-        console.log(status ? "✅ Libro actualizado" : "❌ No encontrado")
+        console.log(status ? "Libro actualizado" : "No encontrado")
     }
 
     deleteBook(): void {
@@ -246,7 +247,7 @@ export class View {
         const id = scanf("%s")
 
         const status = this._bookService.delete(id)
-        console.log(status ? "✅ Libro eliminado" : "❌ No encontrado")
+        console.log(status ? "Libro eliminado" : "No encontrado")
     }
 
     findBookById(): void {
@@ -257,7 +258,7 @@ export class View {
         const result = this._bookService.findbyid<Libro>(id)
 
         if (result.length === 0) {
-            console.log("❌ Libro no encontrado")
+            console.log("Libro no encontrado")
             return
         }
 
@@ -276,19 +277,19 @@ export class View {
         const libro = this._bookService.findbyid<Libro>(idLibro)[0]
 
         if (!libro) {
-            console.log("❌ Libro no existe")
+            console.log("Libro no existe")
             return
         }
 
         if (!libro.disponible) {
-            console.log("❌ Libro no disponible")
+            console.log("Libro no disponible")
             return
         }
 
         const estudiante = this._studentService.findbyid<Estudiante>(idCliente)[0]
 
         if (!estudiante) {
-            console.log("❌ Estudiante no existe")
+            console.log("Estudiante no existe")
             return
         }
 
@@ -301,17 +302,15 @@ export class View {
         const status = this._loanService.create(prestamo)
 
         if (!status) {
-            console.log("❌ Error al prestar libro")
+            console.log("Error al prestar libro")
             return
         }
 
         libro.disponible = false
         this._bookService.update(idLibro, libro)
 
-        console.log("✅ Libro prestado correctamente")
+        console.log("Libro prestado correctamente")
     }
-
-    // TOCA CORREGIR ESTA FUNCION DE DEVOLVER 
 
     returnBook(): void {
 
@@ -325,7 +324,7 @@ export class View {
         )
 
         if (!prestamo) {
-            console.log("❌ No hay préstamo activo para este libro")
+            console.log("No hay préstamo activo para este libro")
             return
         }
 
@@ -340,7 +339,7 @@ export class View {
             this._bookService.update(idLibro, libro)
         }
 
-        console.log("✅ Libro devuelto correctamente")
+        console.log("Libro devuelto correctamente")
     }
 
     pause(): void {
