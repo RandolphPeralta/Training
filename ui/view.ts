@@ -5,9 +5,9 @@ import { Estudiante, Libro, Prestamos } from "../modelsave/type"
 export class View {
 
     constructor(
-        private _studentService: IAccionadicional,
-        private _bookService: IAccionadicional,
-        private _loanService: IAccionadicional
+        private _studentService: IAccionadicional<Estudiante>,
+        private _bookService: IAccionadicional<Libro>,
+        private _loanService: IAccionadicional<Prestamos>
     ) { }
 
     buildMenuAplicaction(): void {
@@ -124,7 +124,7 @@ export class View {
     }
 
     readStudents(): void {
-        const estudiantes = this._studentService.read<Estudiante>()
+        const estudiantes = this._studentService.read()
 
         console.log("\n===== LISTADO =====")
 
@@ -164,7 +164,7 @@ export class View {
         console.log("Ingrese el ID del estudiante a buscar: ")
         const id = scanf("%s")
 
-        const result = this._studentService.findbyid<Estudiante>(id)
+        const result = this._studentService.findbyid(id)
 
         if (result.length === 0) {
             console.log("Estudiante no encontrado")
@@ -202,7 +202,7 @@ export class View {
     }
 
     readBooks(): void {
-        const libros = this._bookService.read<Libro>()
+        const libros = this._bookService.read()
 
         console.log("\n===== LISTADO DE LIBROS =====")
 
@@ -255,7 +255,7 @@ export class View {
         console.log("Ingrese el ID del libro:")
         const id = scanf("%s")
 
-        const result = this._bookService.findbyid<Libro>(id)
+        const result = this._bookService.findbyid(id)
 
         if (result.length === 0) {
             console.log("Libro no encontrado")
@@ -274,7 +274,7 @@ export class View {
         console.log("Ingrese ID del estudiante:")
         const idCliente = scanf("%s")
 
-        const libro = this._bookService.findbyid<Libro>(idLibro)[0]
+        const libro = this._bookService.findbyid(idLibro)[0]
 
         if (!libro) {
             console.log("Libro no existe")
@@ -286,7 +286,7 @@ export class View {
             return
         }
 
-        const estudiante = this._studentService.findbyid<Estudiante>(idCliente)[0]
+        const estudiante = this._studentService.findbyid(idCliente)[0]
 
         if (!estudiante) {
             console.log("Estudiante no existe")
@@ -317,7 +317,7 @@ export class View {
         console.log("Ingrese ID del libro a devolver:")
         const idLibro = scanf("%s")
 
-        const prestamos = this._loanService.read<Prestamos>()
+        const prestamos = this._loanService.read()
 
         const prestamo = prestamos.find(p =>
             p.idLibro === idLibro && !p.fechaDevolucion
@@ -332,7 +332,7 @@ export class View {
 
         this._loanService.update(idLibro, prestamo)
 
-        const libro = this._bookService.findbyid<Libro>(idLibro)[0]
+        const libro = this._bookService.findbyid(idLibro)[0]
 
         if (libro) {
             libro.disponible = true

@@ -1,6 +1,6 @@
 import { IAccionadicional } from "../abstration/interfaces"
 
-export class InMemoryService implements IAccionadicional {
+export class InMemoryService<T> implements IAccionadicional<T> {
     private databaseInMemory: Array<any> = []
 
     create<T>(item: T): boolean {

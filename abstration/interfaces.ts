@@ -1,12 +1,12 @@
-export interface IAction {
-    create<T>(item: T): boolean
-    read<T>(): Array<T>
-    update<T>(id: string, data: T): boolean
+export interface IAction<T> {
+    create(item: T): boolean
+    read(): Array<T>
+    update(id: string, data: T): boolean
     delete(id: string): boolean
 }
 
-export interface IAccionadicional extends IAction{
-    findbyid<T>(id: string): Array<T>
+export interface IAccionadicional<T> extends IAction<T>{
+    findbyid(id: string): Array<T>
 }
 
 
