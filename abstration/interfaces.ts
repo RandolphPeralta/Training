@@ -8,5 +8,3 @@ export interface IAction<T> {
 export interface IAccionadicional<T> extends IAction<T>{
     findbyid(id: string): Array<T>
 }
-
-
