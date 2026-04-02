@@ -15,6 +15,4 @@ export type Estudiante = {
 export type Prestamos = {
     idLibro: string,
     idCliente: string
-    fechaPrestamo: Date;
-    fechaDevolucion?: Date;
 }

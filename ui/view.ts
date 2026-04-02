@@ -296,7 +296,6 @@ export class View {
         const prestamo: Prestamos = {
             idLibro,
             idCliente,
-            fechaPrestamo: new Date()
         }
 
         const status = this._loanService.create(prestamo)
@@ -319,16 +318,14 @@ export class View {
 
         const prestamos = this._loanService.read()
 
-        const prestamo = prestamos.find(p =>
-            p.idLibro === idLibro && !p.fechaDevolucion
+        const prestamo = prestamos.find(prestado =>
+            prestado.idLibro === idLibro 
         )
 
         if (!prestamo) {
             console.log("No hay préstamo activo para este libro")
             return
         }
-
-        prestamo.fechaDevolucion = new Date()
 
         this._loanService.update(idLibro, prestamo)
 
