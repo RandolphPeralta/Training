@@ -7,12 +7,12 @@ import {StudentService } from "./src/services/student.service";
 
 const studentmemory = new InMemoryService<Estudiante>()
 const bookmemory = new InMemoryService<Libro>()
-const loanService = new InMemoryService<Prestamos>() 
+const loanmemory = new InMemoryService<Prestamos>() 
 
 const bookservice = new BookService(bookmemory)
 const studentservice = new StudentService(studentmemory)
 
-const view = new View(studentservice, bookservice, loanService)
+const view = new View(studentservice, bookservice, loanmemory)
 const app =  new Application(view);
 
 app.start();

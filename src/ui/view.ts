@@ -106,20 +106,20 @@ export class View {
 
     createStudent(): void {
 
-        const form: Estudiante = {
+        const libro: Estudiante = {
             id: "",
             nombre: "",
             identificacion: "",
             grado: ""
         }
 
-        Object.entries(form).forEach(([key]) => {
+        Object.entries(libro).forEach(([key]) => {
             console.log(`Ingrese ${key}: `)
             const value = scanf("%s")
-            form[key as keyof Estudiante] = value
+            libro[key as keyof Estudiante] = value
         })
 
-        const status = this._studentService.create(form)
+        const status = this._studentService.create(libro)
         console.log(status ? "Estudiante creado" : "Error")
     }
 
@@ -135,20 +135,20 @@ export class View {
         console.log("Ingrese el ID del estudiante a actualizar: ")
         const id = scanf("%s")
 
-        const form: Estudiante = {
+        const libro: Estudiante = {
             id: id,
             nombre: "",
             identificacion: "",
             grado: ""
         }
 
-        Object.entries(form).forEach(([key]) => {
+        Object.entries(libro).forEach(([key]) => {
             console.log(`Ingrese ${key}: `)
             const value = scanf("%s")
-            form[key as keyof Estudiante] = value
+            libro[key as keyof Estudiante] = value
         })
 
-        const status = this._studentService.update(id, form)
+        const status = this._studentService.update(id, libro)
         console.log(status ? "Actualizado" : "No encontrado")
     }
 
@@ -172,7 +172,7 @@ export class View {
         }
 
         console.log("\n===== RESULTADO =====")
-        result.forEach(est => console.log(est))
+        result.forEach(estudiante => console.log(estudiante))
 
     }
 
@@ -190,14 +190,14 @@ export class View {
         console.log("¿Disponible? (1 = sí, 0 = no):")
         const disponible = scanf("%s") === "1"
 
-        const form: Libro = {
+        const libro: Libro = {
             id,
             titulo,
             autor,
             disponible
         }
 
-        const status = this._bookService.create(form)
+        const status = this._bookService.create(libro)
         console.log(status ? "Libro creado" : "Error")
     }
 
@@ -230,14 +230,14 @@ export class View {
         console.log("¿Disponible? (1 = sí, 0 = no):")
         const disponible = scanf("%s") === "1"
 
-        const form: Libro = {
+        const libro: Libro = {
             id,
             titulo,
             autor,
             disponible
         }
 
-        const status = this._bookService.update(id, form)
+        const status = this._bookService.update(id, libro)
         console.log(status ? "Libro actualizado" : "No encontrado")
     }
 
