@@ -5,7 +5,7 @@ export class LoanService implements ISave<Prestamos>{
   prestamos: Array<any> = [];
 
   create<Prestamo>(prestamo: Prestamo): boolean {
-    this.prestamos.push({ prestamo });
+    this.prestamos.push(prestamo);
     return true;
   }
 

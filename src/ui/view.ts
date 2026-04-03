@@ -1,13 +1,13 @@
 import scanf from 'scanf';
 import { IAccionadicional } from "../abstration/interfaces"
-import { Estudiante, Libro, Prestamos } from "../modelsave/type"
+import { Estudiante, Libro, Prestamo } from "../modelsave/type"
 
 export class View {
 
     constructor(
         private _studentService: IAccionadicional<Estudiante>,
         private _bookService: IAccionadicional<Libro>,
-        private _loanService: IAccionadicional<Prestamos>
+        private _loanService: IAccionadicional<Prestamo>
     ) { }
 
     buildMenuAplicaction(): void {
@@ -24,11 +24,14 @@ export class View {
         console.log("10. Buscar Libro");
         console.log("11. Prestar Libro")
         console.log("12. Devolver Libro")
+        console.log("13. Mostrar Prestamos")
+        console.log("14. Buscar Prestamo")
+        console.log("15. Actualizar Prestamo")
         console.log("0. Salir del sistema");
         console.log()
         console.log(`Que opcion desea: `)
         const selectedOption = scanf("%s");
-        
+
         this.processOptionSelected(selectedOption)
     }
 
@@ -93,7 +96,22 @@ export class View {
                 this.returnBook()
                 this.pause()
                 this.buildMenuAplicaction()
-                break    
+                break
+            case "13":
+                this.readLoans()
+                this.pause()
+                this.buildMenuAplicaction()
+                break
+            case "14":
+                this.findLoanByBook()
+                this.pause()
+                this.buildMenuAplicaction()
+                break
+            case "15":
+                this.updateLoan()
+                this.pause()
+                this.buildMenuAplicaction()
+                break
             case "0":
                 console.log("Saliendo del sistema...");
                 return
@@ -104,7 +122,7 @@ export class View {
         }
     }
 
-    createStudent(): void {
+    private createStudent(): void {
 
         const libro: Estudiante = {
             id: "",
@@ -123,7 +141,7 @@ export class View {
         console.log(status ? "Estudiante creado" : "Error")
     }
 
-    readStudents(): void {
+    private readStudents(): void {
         const estudiantes = this._studentService.read()
 
         console.log("\n===== LISTADO =====")
@@ -131,7 +149,7 @@ export class View {
         estudiantes.forEach(estudiante => { console.log(estudiante) })
     }
 
-    updateStudent(): void {
+    private updateStudent(): void {
         console.log("Ingrese el ID del estudiante a actualizar: ")
         const id = scanf("%s")
 
@@ -152,7 +170,7 @@ export class View {
         console.log(status ? "Actualizado" : "No encontrado")
     }
 
-    deleteStudent(): void {
+    private deleteStudent(): void {
         console.log("Ingrese el ID del estudiante a eliminar: ")
         const id = scanf("%s")
 
@@ -160,7 +178,7 @@ export class View {
         console.log(status ? "Eliminado" : "No encontrado")
     }
 
-    findStudentById(): void {
+    private findStudentById(): void {
         console.log("Ingrese el ID del estudiante a buscar: ")
         const id = scanf("%s")
 
@@ -176,7 +194,7 @@ export class View {
 
     }
 
-    createBook(): void {
+    private createBook(): void {
 
         console.log("Ingrese id:")
         const id = scanf("%s")
@@ -201,7 +219,7 @@ export class View {
         console.log(status ? "Libro creado" : "Error")
     }
 
-    readBooks(): void {
+    private readBooks(): void {
         const libros = this._bookService.read()
 
         console.log("\n===== LISTADO DE LIBROS =====")
@@ -216,7 +234,7 @@ export class View {
         })
     }
 
-    updateBook(): void {
+    private updateBook(): void {
 
         console.log("Ingrese el ID del libro a actualizar:")
         const id = scanf("%s")
@@ -241,7 +259,7 @@ export class View {
         console.log(status ? "Libro actualizado" : "No encontrado")
     }
 
-    deleteBook(): void {
+    private deleteBook(): void {
 
         console.log("Ingrese el ID del libro a eliminar:")
         const id = scanf("%s")
@@ -250,7 +268,7 @@ export class View {
         console.log(status ? "Libro eliminado" : "No encontrado")
     }
 
-    findBookById(): void {
+    private findBookById(): void {
 
         console.log("Ingrese el ID del libro:")
         const id = scanf("%s")
@@ -266,7 +284,7 @@ export class View {
         result.forEach(libro => console.log(libro))
     }
 
-    lendBook(): void {
+    private lendBook(): void {
 
         console.log("Ingrese ID del libro:")
         const idLibro = scanf("%s")
@@ -293,9 +311,11 @@ export class View {
             return
         }
 
-        const prestamo: Prestamos = {
-            idLibro,
-            idCliente,
+        const prestamo: Prestamo = {
+            id: Math.random().toString(),
+            libro,
+            estudiante,
+            fechaPrestamo: new Date()
         }
 
         const status = this._loanService.create(prestamo)
@@ -306,20 +326,20 @@ export class View {
         }
 
         libro.disponible = false
-        this._bookService.update(idLibro, libro)
+        this._bookService.update(libro.id, libro)
 
         console.log("Libro prestado correctamente")
     }
 
     returnBook(): void {
 
-        console.log("Ingrese ID del libro a devolver:")
+        console.log("Ingrese ID del libro:")
         const idLibro = scanf("%s")
 
         const prestamos = this._loanService.read()
 
-        const prestamo = prestamos.find(prestado =>
-            prestado.idLibro === idLibro 
+        const prestamo = prestamos.find(p =>
+            p.libro.id === idLibro && !p.fechaDevolucion
         )
 
         if (!prestamo) {
@@ -327,16 +347,84 @@ export class View {
             return
         }
 
-        this._loanService.update(idLibro, prestamo)
+        prestamo.fechaDevolucion = new Date()
 
-        const libro = this._bookService.findbyid(idLibro)[0]
+        this._loanService.update(prestamo.id, prestamo)
 
-        if (libro) {
-            libro.disponible = true
-            this._bookService.update(idLibro, libro)
-        }
+        prestamo.libro.disponible = true
+        this._bookService.update(prestamo.libro.id, prestamo.libro)
 
         console.log("Libro devuelto correctamente")
+    }
+
+    readLoans(): void {
+
+        const prestamos = this._loanService.read()
+
+        console.log("\n===== PRÉSTAMOS =====")
+
+        if (prestamos.length === 0) {
+            console.log("No hay préstamos")
+            return
+        }
+
+        prestamos.forEach(p => {
+            console.log({
+                id: p.id,
+                libro: p.libro.titulo,
+                estudiante: p.estudiante.nombre,
+                fechaPrestamo: p.fechaPrestamo,
+                fechaDevolucion: p.fechaDevolucion || "Pendiente"
+            })
+        })
+    }
+
+    findLoanByBook(): void {
+
+        console.log("Ingrese ID del libro:")
+        const idLibro = scanf("%s")
+
+        const prestamos = this._loanService.read()
+
+        const prestamo = prestamos.find(p =>
+            p.libro.id === idLibro && !p.fechaDevolucion
+        )
+
+        if (!prestamo) {
+            console.log("Libro disponible (no prestado)")
+            return
+        }
+
+        console.log("\n===== PRÉSTAMO ACTIVO =====")
+        console.log({
+            libro: prestamo.libro.titulo,
+            estudiante: prestamo.estudiante.nombre,
+            fecha: prestamo.fechaPrestamo
+        })
+    }
+
+    updateLoan(): void {
+
+        console.log("Ingrese ID del préstamo:")
+        const id = scanf("%s")
+
+        const prestamos = this._loanService.read()
+
+        const prestamo = prestamos.find(p => p.id === id)
+
+        if (!prestamo) {
+            console.log("Préstamo no encontrado")
+            return
+        }
+
+        console.log("Ingrese nueva fecha devolución (YYYY-MM-DD):")
+        const fecha = scanf("%s")
+
+        prestamo.fechaDevolucion = new Date(fecha)
+
+        const status = this._loanService.update(id, prestamo)
+
+        console.log(status ? "Préstamo actualizado" : "Error")
     }
 
     pause(): void {
