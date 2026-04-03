@@ -3,7 +3,7 @@ import {View} from "./src/ui/view";
 import {InMemoryService} from "./src/persistence/memory";
 import {Estudiante, Libro, Prestamos} from "./src/modelsave/type";
 import {BookService} from "./src/services/book.service";
-import { StudentService } from "./src/services/student.service";
+import {StudentService } from "./src/services/student.service";
 
 const studentmemory = new InMemoryService<Estudiante>()
 const bookmemory = new InMemoryService<Libro>()
