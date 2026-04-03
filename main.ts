@@ -1,13 +1,18 @@
-import {Application} from "../Training/runapp/app"
-import {View} from "./ui/view";
-import {InMemoryService} from "./persistence/memory";
-import {Estudiante, Libro, Prestamos} from "./modelsave/type";
+import {Application} from "./src/runapp/app"
+import {View} from "./src/ui/view";
+import {InMemoryService} from "./src/persistence/memory";
+import {Estudiante, Libro, Prestamos} from "./src/modelsave/type";
+import {BookService} from "./src/services/book.service";
+import { StudentService } from "./src/services/student.service";
 
-const studentService = new InMemoryService<Estudiante>()
-const bookService = new InMemoryService<Libro>()
+const studentmemory = new InMemoryService<Estudiante>()
+const bookmemory = new InMemoryService<Libro>()
 const loanService = new InMemoryService<Prestamos>() 
 
-const view = new View(studentService, bookService, loanService)
+const bookservice = new BookService(bookmemory)
+const studentservice = new StudentService(studentmemory)
+
+const view = new View(studentservice, bookservice, loanService)
 const app =  new Application(view);
 
 app.start();
