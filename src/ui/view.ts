@@ -286,6 +286,9 @@ export class View {
 
     private lendBook(): void {
 
+        console.log("Ingrese ID para el prestamo:")
+        const idPrestamo = scanf("%s")
+
         console.log("Ingrese ID del libro:")
         const idLibro = scanf("%s")
 
@@ -312,7 +315,7 @@ export class View {
         }
 
         const prestamo: Prestamo = {
-            id: Math.random().toString(),
+            id: idPrestamo,
             libro,
             estudiante,
             fechaPrestamo: new Date()
@@ -331,15 +334,15 @@ export class View {
         console.log("Libro prestado correctamente")
     }
 
-    returnBook(): void {
+    private returnBook(): void {
 
         console.log("Ingrese ID del libro:")
         const idLibro = scanf("%s")
 
         const prestamos = this._loanService.read()
 
-        const prestamo = prestamos.find(p =>
-            p.libro.id === idLibro && !p.fechaDevolucion
+        const prestamo = prestamos.find(prestado =>
+            prestado.libro.id === idLibro && !prestado.fechaDevolucion
         )
 
         if (!prestamo) {
@@ -357,7 +360,7 @@ export class View {
         console.log("Libro devuelto correctamente")
     }
 
-    readLoans(): void {
+    private readLoans(): void {
 
         const prestamos = this._loanService.read()
 
@@ -379,7 +382,7 @@ export class View {
         })
     }
 
-    findLoanByBook(): void {
+    private findLoanByBook(): void {
 
         console.log("Ingrese ID del libro:")
         const idLibro = scanf("%s")
@@ -403,14 +406,14 @@ export class View {
         })
     }
 
-    updateLoan(): void {
+    private updateLoan(): void {
 
         console.log("Ingrese ID del préstamo:")
         const id = scanf("%s")
 
         const prestamos = this._loanService.read()
 
-        const prestamo = prestamos.find(p => p.id === id)
+        const prestamo = prestamos.find(prestado => prestado.id === id)
 
         if (!prestamo) {
             console.log("Préstamo no encontrado")
