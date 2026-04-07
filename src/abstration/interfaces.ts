@@ -11,3 +11,7 @@ export interface IAction<T> extends ISave<T> {
 export interface IAccionadicional<T> extends IAction<T> {
     findbyid(id: string): Array<T>
 }
+
+export interface ICommand {
+  execute(): any;
+}
