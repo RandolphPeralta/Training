@@ -3,7 +3,7 @@ import { Estudiante,Libro, Prestamo } from "../../modelsave/type";
 import scanf from 'scanf';
 import { ICommand } from "../../abstration/interfaces";
 
-export class PrestarLibroCommand implements ICommand {
+export class LendBookCommand implements ICommand {
 
     constructor(
         private _studentService: IAccionadicional<Estudiante>,

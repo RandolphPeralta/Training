@@ -3,7 +3,7 @@ import { Estudiante } from "../../modelsave/type";
 import scanf from 'scanf';
 import { ICommand } from "../../abstration/interfaces";
 
-export class EliminarEstudianteCommand implements ICommand {
+export class DeleteStudentCommand implements ICommand {
   constructor(private _studentService: IAccionadicional<Estudiante>) {}
 
   execute() {

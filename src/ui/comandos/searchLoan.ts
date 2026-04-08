@@ -3,7 +3,7 @@ import { Prestamo } from "../../modelsave/type";
 import scanf from 'scanf';
 import { ICommand } from "../../abstration/interfaces";
 
-export class BuscarPrestamoCommand implements ICommand {
+export class FindLoanCommand implements ICommand {
 
     constructor(
         private _loanService: IAccionadicional<Prestamo>

@@ -3,12 +3,9 @@ import { Libro, Prestamo } from "../../modelsave/type";
 import scanf from 'scanf';
 import { ICommand } from "../../abstration/interfaces";
 
-export class DevolverLibroCommand implements ICommand {
+export class ReturnBookCommand implements ICommand {
 
-    constructor(
-        private _bookService: IAccionadicional<Libro>,
-        private _loanService: IAccionadicional<Prestamo>
-      ) { }
+    constructor(private _bookService: IAccionadicional<Libro>, private _loanService: IAccionadicional<Prestamo>) { }
 
     execute() {
         console.log("Ingrese ID del libro:")

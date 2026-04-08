@@ -3,7 +3,7 @@ import { Libro } from "../../modelsave/type";
 import scanf from 'scanf';
 import { ICommand } from "../../abstration/interfaces";
 
-export class UpdateStudentCommand implements ICommand {
+export class UpdateBookCommand implements ICommand {
   constructor(private _bookService: IAccionadicional<Libro>) {}
 
   execute() {
