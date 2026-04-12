@@ -10,11 +10,7 @@ const studentmemory = new InMemoryService<Estudiante>()
 const bookmemory = new InMemoryService<Libro>()
 const loanmemory = new InMemoryService<Prestamo>() 
 
-const bookservice = new BookService(bookmemory)
-const studentservice = new StudentService(studentmemory)
-const loanservice = new LoanService(loanmemory)
-
-const view = new View(studentservice, bookservice, loanservice)
+const view = new View(studentmemory, bookmemory, loanmemory)
 const app =  new Application(view);
 
 app.start();
